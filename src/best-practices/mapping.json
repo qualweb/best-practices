@@ -7,5 +7,6 @@
   "b, blink, blockquote, basefont, center, cite, em, font, i,body link, mark, strong, s, strike, u, vlink": ["QW-BP10"],
   "body, body *": ["QW-BP11"],
   "a > img": ["QW-BP13"],
-  "a:first-child": ["QW-BP4"]
+  "a:first-child": ["QW-BP4"],
+  "span, article, section, nav, aside, hgroup, header, footer, address, p, hr, blockquote, div, h1, h2, h3, h4, h5, h6, li, ul, ol, dd, dt, dl, figcaption": ["QW-BP14"]
 }
