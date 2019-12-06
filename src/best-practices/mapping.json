@@ -7,5 +7,6 @@
   "b, blink, blockquote, basefont, center, cite, em, font, i,body link, mark, strong, s, strike, u, vlink": ["QW-BP10"],
   "body, body *": ["QW-BP11"],
   "a > img": ["QW-BP13"],
-  "a:first-child": ["QW-BP4"]
+  "a:first-child": ["QW-BP4"],
+  "*": ["QW-BP15"]
 }
