@@ -39,9 +39,6 @@ class QW_BP15 extends BestPractice {
       return;
     }
 
-    if (!aWithImg) {
-      return;
-    }
     const evaluation: BestPracticeResult = {
       verdict: '',
       description: '',
