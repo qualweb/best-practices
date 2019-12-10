@@ -1,5 +1,5 @@
 {
- "img[alt]": ["QW-BP2"],
+  "img[alt]": ["QW-BP2"],
   "a[title]": ["QW-BP3"],
   "table": ["QW-BP5", "QW-BP9", "QW-BP12"],
   "title": ["QW-BP6", "QW-BP7"],
@@ -8,5 +8,5 @@
   "body, body *": ["QW-BP11"],
   "a > img": ["QW-BP13"],
   "a:first-child": ["QW-BP4"],
-  "*": ["QW-BP15"]
+  "": ["QW-BP15"]
 }
