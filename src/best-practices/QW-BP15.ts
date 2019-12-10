@@ -55,7 +55,6 @@ class QW_BP15 extends BestPractice {
   }
 
   private lengthIsAbsolute(value: String){
-    console.log(value);
     for(const metric of this.absoluteLengths){
       if (value.includes(metric))
         return true
