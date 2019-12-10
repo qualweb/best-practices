@@ -99,11 +99,11 @@ class QW_BP15 extends BestPractice {
   private extractInfo(cssObject: any, declaration: any, fileName: string, evaluation: BestPracticeResult): void {
     if(this.lengthIsAbsolute(declaration['value'])){
       evaluation.verdict = 'failed';
-      evaluation.description = 'Check that heading markup is used when content is a heading';
+      evaluation.description = 'At least one width attribute of an HTML element is expressed in absolute values';
       evaluation.resultCode = 'RC1';
     }else {
       evaluation.verdict = 'passed';
-      evaluation.description = 'Check that heading markup is used when content is a heading';
+      evaluation.description = 'At least one width attribute of an HTML element is expressed in relative values';
       evaluation.resultCode = 'RC2';
     }
   }
