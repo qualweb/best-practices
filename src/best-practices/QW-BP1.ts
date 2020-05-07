@@ -2,8 +2,9 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
+import {QWElement,DomUtils} from "@qualweb/html-util";
+
+
 
 class QW_BP1 extends BestPractice {
 
@@ -36,7 +37,7 @@ class QW_BP1 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
     const evaluation: BestPracticeResult = {
       verdict: '',
@@ -52,8 +53,8 @@ class QW_BP1 extends BestPractice {
       evaluation.verdict = 'warning';
       evaluation.description = 'Check that heading markup is used when content is a heading';
       evaluation.resultCode = 'RC2';
-      evaluation.htmlCode = await DomUtils.getElementHtmlCode(element, true, true);
-      evaluation.pointer = await DomUtils.getElementSelector(element);
+      evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
+      evaluation.pointer = await domUtils.getElementSelector(element);
     }
     
     super.addEvaluationResult(evaluation);

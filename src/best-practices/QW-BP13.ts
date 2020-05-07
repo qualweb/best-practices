@@ -1,10 +1,9 @@
 'use strict';
 
 import { BestPracticeResult } from '@qualweb/best-practices';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
-
+import {QWElement,DomUtils} from "@qualweb/html-util";
 import BestPractice from './BestPractice.object';
+
 
 class QW_BP13 extends BestPractice {
 
@@ -28,19 +27,19 @@ class QW_BP13 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
     if (!element) {
       return;
     }
 
-    const aWithImg = await DomUtils.getElementParent(element);
+    const aWithImg = await domUtils.getElementParent(element);
 
     if (!aWithImg) {
       return;
     }
 
-    const href = await DomUtils.getElementAttribute(aWithImg, 'href');
+    const href = await domUtils.getElementAttribute(aWithImg, 'href');
 
     const evaluation: BestPracticeResult = {
       verdict: '',
@@ -56,11 +55,11 @@ class QW_BP13 extends BestPractice {
       return elem.previousElementSibling;
     })).asElement();
 
-    if (aWithImg && aWithImgNext && (await DomUtils.getElementAttribute(aWithImgNext, 'href') === href)) {
+    if (aWithImg && aWithImgNext && (await domUtils.getElementAttribute(aWithImgNext, 'href') === href)) {
       evaluation.verdict = 'failed';
       evaluation.description = 'There are consecutive links with the same href in which one of the links contained an image';
       evaluation.resultCode = 'RC1';
-    } else if (aWithImg && aWithImgPrev && (await DomUtils.getElementAttribute(aWithImgPrev, 'href') === href)) {
+    } else if (aWithImg && aWithImgPrev && (await domUtils.getElementAttribute(aWithImgPrev, 'href') === href)) {
       evaluation.verdict = 'failed';
       evaluation.description = 'There are consecutive links with the same href in which one of the links contained an image';
       evaluation.resultCode = 'RC1';
@@ -71,10 +70,10 @@ class QW_BP13 extends BestPractice {
     }
 
     if (aWithImg) {
-      const aWithImgParent = await DomUtils.getElementParent(aWithImg);
+      const aWithImgParent = await domUtils.getElementParent(aWithImg);
       if (aWithImgParent) {
-        evaluation.htmlCode = await DomUtils.getElementHtmlCode(aWithImgParent, true, true);
-        evaluation.pointer = await DomUtils.getElementSelector(aWithImgParent);
+        evaluation.htmlCode = await domUtils.getElementHtmlCode(aWithImgParent, true, true);
+        evaluation.pointer = await domUtils.getElementSelector(aWithImgParent);
       }
     }
 

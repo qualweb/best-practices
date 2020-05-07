@@ -2,8 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
+import {QWElement,DomUtils} from "@qualweb/html-util";
 
 class QW_BP10 extends BestPractice {
 
@@ -28,7 +27,7 @@ class QW_BP10 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
     const evaluation: BestPracticeResult = {
       verdict: '',
@@ -41,15 +40,15 @@ class QW_BP10 extends BestPractice {
       evaluation.description = `The webpage doesn't use elements to control the visual content presentation`;
       evaluation.resultCode = 'RC1';
     } else {
-      const name = await DomUtils.getElementTagName(element);
+      const name = await domUtils.getElementTagName(element);
 
       evaluation.verdict = 'failed';
       evaluation.description = `The webpage uses the element ${name} to control the visual content presentation`;
       evaluation.resultCode = 'RC2';
 
       evaluation.attributes = name;
-      evaluation.htmlCode = await DomUtils.getElementHtmlCode(element, true, true);
-      evaluation.pointer = await DomUtils.getElementSelector(element);
+      evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
+      evaluation.pointer = await domUtils.getElementSelector(element);
     }
     
     super.addEvaluationResult(evaluation);

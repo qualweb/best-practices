@@ -2,8 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
+import {QWElement,DomUtils} from "@qualweb/html-util";
 
 class QW_BP4 extends BestPractice {
 
@@ -28,9 +27,9 @@ class QW_BP4 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
-    if (!element || await DomUtils.elementHasParent(element, 'nav')) {
+    if (!element || await domUtils.elementHasParent(element, 'nav')) {
       return;
     }
 
@@ -40,18 +39,7 @@ class QW_BP4 extends BestPractice {
       resultCode: ''
     };
 
-    const aCount = await element.evaluate(elem => {
-      let aCount = 1;
-      let nextSibling = elem['nextElementSibling'];
-      while (nextSibling) {
-        if (nextSibling['tagName'].toLowerCase() === 'a') {
-          aCount++;
-        }
-        nextSibling = nextSibling['nextElementSibling'];
-      }
-      return aCount;
-    });
-
+    const aCount = domUtils.getNumberOfSiblingsWithTheSameTag(element);
     if (aCount >= 10) {
       evaluation.verdict = 'failed';
       evaluation.description = `It was found a group of 10 or more links not grouped within a nav element`;
@@ -60,10 +48,10 @@ class QW_BP4 extends BestPractice {
       return;
     }
 
-    const parent = await DomUtils.getElementParent(element);
+    const parent = await domUtils.getElementParent(element);
     if (parent) {
-      evaluation.htmlCode = await DomUtils.getElementHtmlCode(parent, true, true);
-      evaluation.pointer = await DomUtils.getElementSelector(parent);
+      evaluation.htmlCode = await domUtils.getElementHtmlCode(parent, true, true);
+      evaluation.pointer = await domUtils.getElementSelector(parent);
     }
 
     super.addEvaluationResult(evaluation);

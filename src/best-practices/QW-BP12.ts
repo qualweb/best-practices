@@ -1,10 +1,9 @@
 'use strict';
 
 import { BestPracticeResult } from '@qualweb/best-practices';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
-
 import BestPractice from './BestPractice.object';
+
+import {QWElement,DomUtils} from "@qualweb/html-util";
 
 class QW_BP12 extends BestPractice {
 
@@ -28,7 +27,7 @@ class QW_BP12 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
     if (!element) {
       return;
@@ -40,17 +39,17 @@ class QW_BP12 extends BestPractice {
       resultCode: ''
     };
 
-    let rows = await element.$$( "tr");
-    let firstRowChildren: ElementHandle[] = [];
+    let rows = domUtils.getElementsInsideElement(element, "tr");
+    let firstRowChildren: QWElement[] = [];
     if (rows.length > 0) {
-      firstRowChildren = await DomUtils.getElementChildren(rows[0]);
+      firstRowChildren = await domUtils.getElementChildren(rows[0]);
 
       let i, scope;
       let scopeCole = true;
 
       for (i = 1; i < firstRowChildren.length; i++) {
-        if (await DomUtils.getElementTagName(firstRowChildren[i]) === "td" || await DomUtils.getElementTagName(firstRowChildren[i]) === "th" && scopeCole) {
-          scope = await DomUtils.getElementAttribute(firstRowChildren[i], "scope");
+        if (await domUtils.getElementTagName(firstRowChildren[i]) === "td" || await domUtils.getElementTagName(firstRowChildren[i]) === "th" && scopeCole) {
+          scope = await domUtils.getElementAttribute(firstRowChildren[i], "scope");
           scopeCole = scope === "col"
         }
       }
@@ -60,9 +59,9 @@ class QW_BP12 extends BestPractice {
       for (i = 1; i < rows.length; i++) {
         if ( scopeRow) {
           row = rows[i];
-          let cells = await row.$$( "td");
+          let cells = domUtils.getElementsInsideElement(row, "td");
           if (cells.length > 0) {
-            scope = await DomUtils.getElementAttribute(cells[0], "scope");
+            scope = await domUtils.getElementAttribute(cells[0], "scope");
             scopeRow = scope === "row";
           }
         }
@@ -83,8 +82,8 @@ class QW_BP12 extends BestPractice {
       evaluation.resultCode = 'RC3';
 
     }
-    evaluation.htmlCode = await DomUtils.getElementHtmlCode(element, true, true);
-    evaluation.pointer = await DomUtils.getElementSelector(element);
+    evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
+    evaluation.pointer = await domUtils.getElementSelector(element);
     
     super.addEvaluationResult(evaluation);
   }

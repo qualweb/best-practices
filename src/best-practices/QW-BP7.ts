@@ -2,8 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
+import {QWElement,DomUtils} from "@qualweb/html-util";
 
 class QW_BP7 extends BestPractice {
 
@@ -28,7 +27,7 @@ class QW_BP7 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
     if (!element) {
       return;
@@ -40,7 +39,7 @@ class QW_BP7 extends BestPractice {
       resultCode: ''
     };
 
-    const titleValue = await DomUtils.getElementText(element);
+    const titleValue = await domUtils.getElementText(element);
     const regExConsecutiveSymbols = new RegExp('[,\\-;!?\'][,\\-;!?\']');
     const regExAllowedSymbols = new RegExp('^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9.,\\-;:!? ]*$');
     const regExAllowBracketsWithText = new RegExp(/(\([a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9.,\-;!?: ]*\))|(\[[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9.,\-;!?: ]*\])|(\{[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9.,\-;!?: ]*\})|(\"[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9.,\-;!?: ]*\")|(\'[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9.,\-;!?: ]*\')/);
@@ -74,8 +73,8 @@ class QW_BP7 extends BestPractice {
         evaluation.resultCode = `RC3`;
       }
     }
-    evaluation.htmlCode = await DomUtils.getElementHtmlCode(element, true, true);
-    evaluation.pointer = await DomUtils.getElementSelector(element);
+    evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
+    evaluation.pointer = await domUtils.getElementSelector(element);
 
     super.addEvaluationResult(evaluation);
   }

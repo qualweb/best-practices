@@ -3,8 +3,9 @@
 import { BestPractice as BestPracticeType, BestPracticeResult } from '@qualweb/best-practices';
 import clone from 'lodash.clone';
 import cloneDeep from 'lodash.clonedeep';
-import { Page, ElementHandle } from 'puppeteer';
 import { CSSStylesheet } from '@qualweb/core';
+import {QWPage,QWElement,DomUtils} from "@qualweb/html-util";
+
 
 abstract class BestPractice {
 
@@ -35,7 +36,7 @@ abstract class BestPractice {
     this.bestPractice.metadata[result.verdict]++;
   }
 
-  public abstract async execute(element: ElementHandle | undefined, page: Page | undefined, styleSheets: CSSStylesheet[] | undefined): Promise<void>;
+  public abstract async execute(domUtils:DomUtils,element: QWElement | undefined, page: QWPage | undefined, styleSheets: CSSStylesheet[] | undefined): Promise<void>;
 
   public getFinalResults() {
     this.outcomeBestPractice();

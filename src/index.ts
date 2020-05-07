@@ -1,11 +1,9 @@
 'use strict';
 
 import { BPOptions, BestPracticesReport } from '@qualweb/best-practices';
-import { Page } from 'puppeteer';
 import { CSSStylesheet } from '@qualweb/core';
 
 import mapping from './best-practices/mapping';
-
 import QW_BP1 from './best-practices/QW-BP1';
 import QW_BP2 from './best-practices/QW-BP2';
 import QW_BP3 from './best-practices/QW-BP3';
@@ -21,10 +19,12 @@ import QW_BP12 from './best-practices/QW-BP12';
 import QW_BP13 from './best-practices/QW-BP13';
 import QW_BP14 from './best-practices/QW-BP14';
 import QW_BP15 from './best-practices/QW-BP15';
+import { DomUtils,QWPage } from '@qualweb/html-util';
 
 class BestPractices {
 
   private bestPractices: any;
+  private domUtils:DomUtils;
 
   private bestPracticesToExecute = {
     'QW-BP1': true,
@@ -44,7 +44,7 @@ class BestPractices {
     'QW-BP15': true
   };
 
-  constructor(options?: BPOptions) {
+  constructor(domUtils:DomUtils,options?: BPOptions) {
     this.bestPractices = {
       'QW-BP1': new QW_BP1(),
       'QW-BP2': new QW_BP2(),
@@ -62,6 +62,7 @@ class BestPractices {
       'QW-BP14': new QW_BP14(),
       'QW-BP15': new QW_BP15()
     };
+    this.domUtils = domUtils;
 
     if (options) {
       this.configure(options);
@@ -85,21 +86,22 @@ class BestPractices {
     }
   }
 
-  private async executeBP(bestPractice: string, selector: string, page: Page | undefined, styleSheets: CSSStylesheet[] | undefined, report: BestPracticesReport): Promise<void> {
+  private async executeBP(bestPractice: string, selector: string, page: QWPage | undefined, styleSheets: CSSStylesheet[] | undefined, report: BestPracticesReport): Promise<void> {
     if(selector === ''){
       await this.bestPractices[bestPractice].execute(undefined, undefined, styleSheets);
       report['best-practices'][bestPractice] = this.bestPractices[bestPractice].getFinalResults();
       report.metadata[report['best-practices'][bestPractice].metadata.outcome]++;
       this.bestPractices[bestPractice].reset();
     } else if(page) {
-      const elements = await page.$$(selector);
+      const elements =  await this.domUtils.getElementsInsideDocument(page, selector);//DomUtil.selectElements
+      console.log(elements);
       const promises = new Array<any>();
       if (elements.length > 0) {
         for (const elem of elements || []) {
-          promises.push(this.bestPractices[bestPractice].execute(elem, page));
+          promises.push(this.bestPractices[bestPractice].execute(this.domUtils,elem, page));
         }
       } else {
-        promises.push(this.bestPractices[bestPractice].execute(undefined, page));
+        promises.push(this.bestPractices[bestPractice].execute(this.domUtils,undefined, page));
       }
       await Promise.all(promises);
 
@@ -108,8 +110,35 @@ class BestPractices {
       this.bestPractices[bestPractice].reset();
     }
   }
+  public async executeHTML( styleSheets: CSSStylesheet[]): Promise<BestPracticesReport> {
+    const report: BestPracticesReport = {
+      type: 'best-practices',
+      metadata: {
+        passed: 0,
+        warning: 0,
+        failed: 0,
+        inapplicable: 0
+      },
+      'best-practices': {}
+    };
+    console.log(document.body.outerHTML);
 
-  public async execute(page: Page, styleSheets: CSSStylesheet[]): Promise<BestPracticesReport> {
+    const promises = new Array<any>();
+
+    for (const selector of Object.keys(mapping) || []) {
+      for (const bestPractice of mapping[selector] || []) {
+        if (this.bestPracticesToExecute[bestPractice]) {
+          promises.push(this.executeBP(bestPractice, selector,<QWPage>{document:document}, styleSheets, report));
+        }
+      }
+    }
+
+    await Promise.all(promises);
+
+    return report;
+  }
+
+  public async execute(page: QWPage, styleSheets: CSSStylesheet[]): Promise<BestPracticesReport> {
     const report: BestPracticesReport = {
       type: 'best-practices',
       metadata: {

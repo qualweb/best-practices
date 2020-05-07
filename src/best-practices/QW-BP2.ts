@@ -1,11 +1,8 @@
 'use strict';
 
 import { BestPracticeResult } from '@qualweb/best-practices';
-import { ElementHandle } from 'puppeteer';
-import { DomUtils } from '@qualweb/util';
-
 import BestPractice from './BestPractice.object';
-
+import {QWElement,DomUtils} from "@qualweb/html-util";
 class QW_BP2 extends BestPractice {
 
   constructor() {
@@ -28,7 +25,7 @@ class QW_BP2 extends BestPractice {
     });
   }
 
-  async execute(element: ElementHandle | undefined): Promise<void> {
+  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
 
     if (!element) {
       return;
@@ -39,8 +36,7 @@ class QW_BP2 extends BestPractice {
       description: '',
       resultCode: ''
     };
-
-    const altValue = await DomUtils.getElementAttribute(element, 'alt');   
+    const altValue = await domUtils.getElementAttribute(element, 'alt');   
 
     if (!altValue || altValue === '') {
       evaluation.verdict = 'inapplicable';
@@ -56,8 +52,8 @@ class QW_BP2 extends BestPractice {
       evaluation.resultCode = 'RC3';
     }
     
-    evaluation.htmlCode = await DomUtils.getElementHtmlCode(element, true, true);
-    evaluation.pointer = await DomUtils.getElementSelector(element);
+    evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
+    evaluation.pointer = await domUtils.getElementSelector(element);
     
     super.addEvaluationResult(evaluation);
   }

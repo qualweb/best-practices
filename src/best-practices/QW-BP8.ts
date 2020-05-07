@@ -2,9 +2,8 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import { DomUtils, AccessibilityUtils } from '@qualweb/util';
-import {ElementHandle, Page} from "puppeteer";
-
+//import { DomUtils, AccessibilityUtils } from '@qualweb/util';
+import {QWElement,QWPage} from "@qualweb/html-util";
 class QW_BP8 extends BestPractice {
 
   constructor() {
@@ -30,12 +29,12 @@ class QW_BP8 extends BestPractice {
   }
 
 
-  async execute(element: ElementHandle | undefined, page: Page): Promise<void> {
+  async execute(element: QWElement | undefined, page: QWPage): Promise<void> {
 
     if (!element) {
       return;
     }
-
+/*
     const evaluation: BestPracticeResult = {
       verdict: '',
       description: '',
@@ -75,7 +74,7 @@ class QW_BP8 extends BestPractice {
     evaluation.pointer = await DomUtils.getElementSelector(element);
 
     super.addEvaluationResult(evaluation);
-  }
-}
+  }*/
+}}
 
 export = QW_BP8;

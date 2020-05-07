@@ -2,6 +2,8 @@ const { BestPractices } = require('../../dist/index');
 const { expect } = require('chai');
 const puppeteer = require('puppeteer');
 const { getDom } = require('../getDom');
+const { PupeteerDomUtils} = require('@qualweb/html-util');
+
 
 describe('Best practice QW-BP1', function () {
   const tests = [
@@ -31,11 +33,10 @@ describe('Best practice QW-BP1', function () {
         this.timeout(10 * 1000);
         const { page } = await getDom(browser,test.url);
 
-        const bestPractices = new BestPractices({
+        const bestPractices = new BestPractices(new PupeteerDomUtils(),{
           bestPractices: ['QW-BP1']
         });
-
-        const report = await bestPractices.execute(page);
+        const report = await bestPractices.execute( { page: page });
         expect(report['best-practices']['QW-BP1'].metadata.outcome).to.be.equal(test.outcome);
       });
     });
