@@ -2,7 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import {QWElement,DomUtils} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
 
 class QW_BP11 extends BestPractice {
 
@@ -26,15 +26,13 @@ class QW_BP11 extends BestPractice {
     });
   }
 
-  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
+   execute(element: QWElement | undefined): void{
 
     if (!element) {
       return;
     }
 
-    const children = await element.evaluate(elem => {
-      return elem.children.length;
-    });
+    const children = element.getElementChildren().length;
 
     if (children === 0) {
       return;
@@ -46,22 +44,19 @@ class QW_BP11 extends BestPractice {
       resultCode: ''
     };
 
-    const { result, hasBr } = await element.evaluate(elem => {
       let result = 0;
       let hasBr = false;
 
-      for (const child of elem.children || []) {
-        const type = child.nodeType;
-        if (child && child.tagName.toLowerCase() === 'br') {
+      for (const child of element.getElementChildren() || []) {
+        const type = child.getElementType();
+        if (child && child.getElementTagName() === 'br') {
           result++;
           hasBr = true;
-        } else if(type !== 3) {
+        } else if(type !== "text") {
           result = 0;
         }
       }
 
-      return { result, hasBr };
-    });
 
     if (result > 3) {
       evaluation.verdict = 'failed';
@@ -74,8 +69,8 @@ class QW_BP11 extends BestPractice {
     }
 
     if (hasBr) {
-      evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
-      evaluation.pointer = await domUtils.getElementSelector(element);
+      evaluation.htmlCode = element.getElementHtmlCode( true, true);
+      evaluation.pointer = element.getElementSelector();
 
       super.addEvaluationResult(evaluation);
     }

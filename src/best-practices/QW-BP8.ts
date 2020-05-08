@@ -2,8 +2,10 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-//import { DomUtils, AccessibilityUtils } from '@qualweb/util';
-import {QWElement,QWPage} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
+import { QWPage } from '@qualweb/qw-page';
+import { AccessibilityUtils } from '@qualweb/util';
+
 class QW_BP8 extends BestPractice {
 
   constructor() {
@@ -29,20 +31,20 @@ class QW_BP8 extends BestPractice {
   }
 
 
-  async execute(element: QWElement | undefined, page: QWPage): Promise<void> {
+  execute(element: QWElement | undefined, page: QWPage): void{
 
     if (!element) {
       return;
     }
-/*
-    const evaluation: BestPracticeResult = {
+
+   const evaluation: BestPracticeResult = {
       verdict: '',
       description: '',
       resultCode: ''
     };
 
-    const images = await element.$$('img');
-    const svgs = await element.$$('svg');
+    const images = element.getElements('img');
+    const svgs = element.getElements('svg');
     const svgANames = new Array<string>();
 
 
@@ -52,13 +54,13 @@ class QW_BP8 extends BestPractice {
       evaluation.resultCode = 'RC1';
     } else {
       for (const svg of svgs || []) {
-        const aName = await AccessibilityUtils.getAccessibleNameSVG(svg, page);
+        const aName = AccessibilityUtils.getAccessibleNameSVG(svg, page);
         if (aName && aName.trim() !== '') {
           svgANames.push(aName)
         }
       }
 
-      const aName = await AccessibilityUtils.getAccessibleName(element, page);
+      const aName = AccessibilityUtils.getAccessibleName(element, page);
       if (aName || svgANames.length > 0) {
         evaluation.verdict = 'passed';
         evaluation.description = `This heading with at least one image has an accessible name`;
@@ -70,11 +72,11 @@ class QW_BP8 extends BestPractice {
       }
     }
 
-    evaluation.htmlCode = await DomUtils.getElementHtmlCode(element, true, true);
-    evaluation.pointer = await DomUtils.getElementSelector(element);
+    evaluation.htmlCode = element.getElementHtmlCode( true, true);
+    evaluation.pointer =element.getElementSelector();
 
     super.addEvaluationResult(evaluation);
-  }*/
-}}
+  }
+}
 
 export = QW_BP8;

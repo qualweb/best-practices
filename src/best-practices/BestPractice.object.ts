@@ -4,7 +4,8 @@ import { BestPractice as BestPracticeType, BestPracticeResult } from '@qualweb/b
 import clone from 'lodash.clone';
 import cloneDeep from 'lodash.clonedeep';
 import { CSSStylesheet } from '@qualweb/core';
-import {QWPage,QWElement,DomUtils} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
+import { QWPage } from '@qualweb/qw-page';
 
 
 abstract class BestPractice {
@@ -36,8 +37,7 @@ abstract class BestPractice {
     this.bestPractice.metadata[result.verdict]++;
   }
 
-  public abstract async execute(domUtils:DomUtils,element: QWElement | undefined, page: QWPage | undefined, styleSheets: CSSStylesheet[] | undefined): Promise<void>;
-
+  public abstract execute(element: QWElement | undefined, page: QWPage | undefined, styleSheets: CSSStylesheet[] | undefined): void;
   public getFinalResults() {
     this.outcomeBestPractice();
     return cloneDeep(this.bestPractice);

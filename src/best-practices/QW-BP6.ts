@@ -2,7 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import {QWElement,DomUtils} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
 
 class QW_BP6 extends BestPractice {
 
@@ -27,7 +27,7 @@ class QW_BP6 extends BestPractice {
     });
   }
 
-  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
+  execute(element: QWElement | undefined): void {
 
     if (!element) {
       return;
@@ -39,7 +39,7 @@ class QW_BP6 extends BestPractice {
       resultCode: ''
     };
 
-    const titleValue = await domUtils.getElementText(element);
+    const titleValue = element.getElementText();
 
     if (titleValue.length > 64) {
       evaluation.verdict = 'failed';
@@ -51,8 +51,8 @@ class QW_BP6 extends BestPractice {
       evaluation.resultCode = 'RC2';
     }
 
-    evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
-    evaluation.pointer = await domUtils.getElementSelector(element);
+    evaluation.htmlCode = element.getElementHtmlCode( true, true);
+    evaluation.pointer = element.getElementSelector();
     
     super.addEvaluationResult(evaluation);
   }

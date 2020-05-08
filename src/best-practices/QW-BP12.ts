@@ -2,8 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-
-import {QWElement,DomUtils} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
 
 class QW_BP12 extends BestPractice {
 
@@ -27,7 +26,7 @@ class QW_BP12 extends BestPractice {
     });
   }
 
-  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
+  execute(element: QWElement | undefined): void {
 
     if (!element) {
       return;
@@ -39,17 +38,17 @@ class QW_BP12 extends BestPractice {
       resultCode: ''
     };
 
-    let rows = domUtils.getElementsInsideElement(element, "tr");
+    let rows = element.getElements( "tr");
     let firstRowChildren: QWElement[] = [];
     if (rows.length > 0) {
-      firstRowChildren = await domUtils.getElementChildren(rows[0]);
+      firstRowChildren =rows[0].getElementChildren();
 
       let i, scope;
       let scopeCole = true;
 
       for (i = 1; i < firstRowChildren.length; i++) {
-        if (await domUtils.getElementTagName(firstRowChildren[i]) === "td" || await domUtils.getElementTagName(firstRowChildren[i]) === "th" && scopeCole) {
-          scope = await domUtils.getElementAttribute(firstRowChildren[i], "scope");
+        if (firstRowChildren[i].getElementTagName() === "td" || firstRowChildren[i].getElementTagName() === "th" && scopeCole) {
+          scope = firstRowChildren[i].getElementAttribute( "scope");
           scopeCole = scope === "col"
         }
       }
@@ -59,9 +58,9 @@ class QW_BP12 extends BestPractice {
       for (i = 1; i < rows.length; i++) {
         if ( scopeRow) {
           row = rows[i];
-          let cells = domUtils.getElementsInsideElement(row, "td");
+          let cells = row.getElements( "td");
           if (cells.length > 0) {
-            scope = await domUtils.getElementAttribute(cells[0], "scope");
+            scope = cells[0].getElementAttribute( "scope");
             scopeRow = scope === "row";
           }
         }
@@ -82,8 +81,8 @@ class QW_BP12 extends BestPractice {
       evaluation.resultCode = 'RC3';
 
     }
-    evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
-    evaluation.pointer = await domUtils.getElementSelector(element);
+    evaluation.htmlCode = element.getElementHtmlCode( true, true);
+    evaluation.pointer = element.getElementSelector();
     
     super.addEvaluationResult(evaluation);
   }

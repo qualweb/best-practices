@@ -1,8 +1,8 @@
 'use strict';
 
 import { BestPracticeResult } from '@qualweb/best-practices';
-import {QWElement,DomUtils} from "@qualweb/html-util";
 import BestPractice from './BestPractice.object';
+import { QWElement } from '@qualweb/qw-element';
 
 
 class QW_BP13 extends BestPractice {
@@ -27,19 +27,19 @@ class QW_BP13 extends BestPractice {
     });
   }
 
-  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
+  execute(element: QWElement | undefined): void{
 
     if (!element) {
       return;
     }
 
-    const aWithImg = await domUtils.getElementParent(element);
+    const aWithImg = element.getElementParent();
 
     if (!aWithImg) {
       return;
     }
 
-    const href = await domUtils.getElementAttribute(aWithImg, 'href');
+    const href = aWithImg.getElementAttribute( 'href');
 
     const evaluation: BestPracticeResult = {
       verdict: '',
@@ -47,19 +47,15 @@ class QW_BP13 extends BestPractice {
       resultCode: ''
     };
 
-    const aWithImgNext = await (await aWithImg.evaluateHandle(elem => {
-      return elem.nextElementSibling;
-    })).asElement();
+    const aWithImgNext = aWithImg.getElementNextSibling(); 
+    
+    const aWithImgPrev = aWithImg.getElementPreviousSibling() 
 
-    const aWithImgPrev = await (await aWithImg.evaluateHandle(elem => {
-      return elem.previousElementSibling;
-    })).asElement();
-
-    if (aWithImg && aWithImgNext && (await domUtils.getElementAttribute(aWithImgNext, 'href') === href)) {
+    if (aWithImg && aWithImgNext && (aWithImgNext.getElementAttribute( 'href') === href)) {
       evaluation.verdict = 'failed';
       evaluation.description = 'There are consecutive links with the same href in which one of the links contained an image';
       evaluation.resultCode = 'RC1';
-    } else if (aWithImg && aWithImgPrev && (await domUtils.getElementAttribute(aWithImgPrev, 'href') === href)) {
+    } else if (aWithImg && aWithImgPrev && (aWithImgPrev.getElementAttribute( 'href') === href)) {
       evaluation.verdict = 'failed';
       evaluation.description = 'There are consecutive links with the same href in which one of the links contained an image';
       evaluation.resultCode = 'RC1';
@@ -70,10 +66,10 @@ class QW_BP13 extends BestPractice {
     }
 
     if (aWithImg) {
-      const aWithImgParent = await domUtils.getElementParent(aWithImg);
+      const aWithImgParent = aWithImg.getElementParent();
       if (aWithImgParent) {
-        evaluation.htmlCode = await domUtils.getElementHtmlCode(aWithImgParent, true, true);
-        evaluation.pointer = await domUtils.getElementSelector(aWithImgParent);
+        evaluation.htmlCode =aWithImgParent.getElementHtmlCode( true, true);
+        evaluation.pointer = aWithImgParent.getElementSelector();
       }
     }
 

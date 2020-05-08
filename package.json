@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/qualweb/best-practices#readme",
   "devDependencies": {
-    "@qualweb/types": "^0.3.22",
+    "@qualweb/types": "file:../types",
     "@types/lodash.clone": "^4.5.6",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/node": "^12.12.25",

@@ -2,7 +2,7 @@
 
 import { BestPracticeResult } from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import {QWElement,DomUtils} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
 
 class QW_BP5 extends BestPractice {
 
@@ -28,7 +28,7 @@ class QW_BP5 extends BestPractice {
     });
   }
 
-  async execute(domUtils:DomUtils,element: QWElement | undefined): Promise<void> {
+  execute(element: QWElement | undefined): void {
 
     const evaluation: BestPracticeResult = {
       verdict: '',
@@ -46,8 +46,8 @@ class QW_BP5 extends BestPractice {
       evaluation.verdict = 'failed';
       evaluation.description = 'There are table elements inside other table elements';
       evaluation.resultCode = 'RC2';
-      evaluation.htmlCode = await domUtils.getElementHtmlCode(element, true, true);
-      evaluation.pointer = await domUtils.getElementSelector(element);
+      evaluation.htmlCode = element.getElementHtmlCode( true, true);
+      evaluation.pointer =element.getElementSelector();
     }
     super.addEvaluationResult(evaluation);
   }

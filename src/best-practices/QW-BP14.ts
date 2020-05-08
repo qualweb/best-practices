@@ -3,7 +3,8 @@
 import { BestPracticeResult } from '@qualweb/best-practices';
 import { CSSStylesheet } from '@qualweb/core';
 import BestPractice from './BestPractice.object';
-import {QWElement,QWPage} from "@qualweb/html-util";
+import { QWElement } from '@qualweb/qw-element';
+import { QWPage } from '@qualweb/qw-page';
 
 
 class QW_BP14 extends BestPractice {
@@ -30,7 +31,7 @@ class QW_BP14 extends BestPractice {
     });
   }
 
-  async execute(element: QWElement | undefined, page: QWPage | undefined, styleSheets: CSSStylesheet[] | undefined): Promise < void > {
+  execute(element: QWElement | undefined, page: QWPage | undefined, styleSheets: CSSStylesheet[] | undefined):  void {
 
     if (!styleSheets) {
       return;
