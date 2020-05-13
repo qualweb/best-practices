@@ -1,8 +1,8 @@
 'use strict';
 
-import { BestPracticeResult } from '@qualweb/best-practices';
+import {BestPracticeResult} from '@qualweb/best-practices';
 import BestPractice from './BestPractice.object';
-import { QWElement } from '@qualweb/qw-element';
+import {QWElement} from '@qualweb/qw-element';
 
 class QW_BP4 extends BestPractice {
 
@@ -29,7 +29,7 @@ class QW_BP4 extends BestPractice {
 
   execute(element: QWElement | undefined): void {
 
-    if (!element || element.elementHasParent( 'nav')) {
+    if (!element || element.elementHasParent('nav')) {
       return;
     }
 
@@ -44,13 +44,13 @@ class QW_BP4 extends BestPractice {
       evaluation.verdict = 'failed';
       evaluation.description = `It was found a group of 10 or more links not grouped within a nav element`;
       evaluation.resultCode = 'RC1';
-    } else  {
+    } else {
       return;
     }
 
-    const parent =element.getElementParent();
+    const parent = element.getElementParent();
     if (parent) {
-      evaluation.htmlCode = parent.getElementHtmlCode( true, true);
+      evaluation.htmlCode = parent.getElementHtmlCode(true, true);
       evaluation.pointer = parent.getElementSelector();
     }
 

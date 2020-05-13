@@ -58,7 +58,9 @@
     "request": "^2.88.2",
     "stew-select": "0.0.5",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "webpack": "4.41.5",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "@qualweb/qw-element": "file:../qw-element",

@@ -2,7 +2,6 @@ const { BestPractices } = require('../../dist/index');
 const { expect } = require('chai');
 const puppeteer = require('puppeteer');
 const { getDom } = require('../getDom');
-const { DomUtilsHTML } = require('@qualweb/html-util');
 
 
 describe('Best Practice QW-BP3', function () {
@@ -39,35 +38,19 @@ describe('Best Practice QW-BP3', function () {
     describe(`${test.outcome.charAt(0).toUpperCase() + test.outcome.slice(1)} example ${i}`, function () {
       it(`should have outcome="${test.outcome}"`, async function () {
         this.timeout(10 * 1000);
-        const { page } = await getDom(browser, test.url);
-
-        const bestPractices = new BestPractices(new DomUtilsHTML(), {
-          bestPractices: ['QW-BP3']
-        });
+        const { sourceHtml, page, stylesheets } = await getDom(browser, test.url);
         await page.addScriptTag({
-          path: require.resolve('../domUtil.js')
+          path: require.resolve('../qwPage.js')
         })
         await page.addScriptTag({
           path: require.resolve('../bp.js')
         })
-        
-        //const report = await frames[0].evaluate( await bestPractices.executeHTML);
-        const report = await page.evaluate(() => {
-          const bestPractices = new BestPractices.BestPractices(new DomUtilsHTML.DomUtilsHTML(), {
-            bestPractices: ['QW-BP3']
-          });
-          return bestPractices.execute({ document: document }, []);
-        });
-        /*const report = await page.evaluate(() => {
-          let scripts = document.querySelectorAll("script");
-          let htmlScrit = []
-          for(let script of scripts){
-            htmlScrit.push(script.outerHTML);
-          }
+        const report = await page.evaluate(( rules) => {
+          const bp = new BestPractices.BestPractices(rules);
+          let report= bp.execute(new QWPage.QWPage(document));
+          return report;
+        }, {bestPractices: ['QW-BP3']});
 
-          return htmlScrit;
-        });*/
-        console.log(report);
         expect(report['best-practices']['QW-BP3'].metadata.outcome).to.be.equal(test.outcome);
       });
     });

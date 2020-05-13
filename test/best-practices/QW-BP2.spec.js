@@ -2,7 +2,6 @@ const { BestPractices } = require('../../dist/index');
 const { expect } = require('chai');
 const puppeteer = require('puppeteer');
 const { getDom } = require('../getDom');
-const { PupeteerDomUtils} = require('@qualweb/html-util');
 
 
 describe('Best practice QW-BP2', function() {
@@ -35,12 +34,19 @@ describe('Best practice QW-BP2', function() {
     describe(`${test.outcome.charAt(0).toUpperCase() + test.outcome.slice(1)} example ${i}`, function () {
       it(`should have outcome="${test.outcome}"`, async function () {
         this.timeout(10 * 1000);
-        const { page } = await getDom(browser,test.url);
+        const { sourceHtml, page, stylesheets } = await getDom(browser, test.url);
+        await page.addScriptTag({
+          path: require.resolve('../qwPage.js')
+        })
+        await page.addScriptTag({
+          path: require.resolve('../bp.js')
+        })
+        const report = await page.evaluate(( rules) => {
+          const bp = new BestPractices.BestPractices(rules);
+          let report= bp.execute(new QWPage.QWPage(document));
+          return report;
+        }, {bestPractices: ['QW-BP2']});
 
-        const bestPractices = new BestPractices(new PupeteerDomUtils(),{
-          bestPractices: ['QW-BP2']
-        });
-        const report = await bestPractices.execute( { page: page });
         expect(report['best-practices']['QW-BP2'].metadata.outcome).to.be.equal(test.outcome);
       });
     });
