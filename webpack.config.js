@@ -5,7 +5,7 @@ module.exports = {
   entry: './dist/index.js',
   output: {
     filename: 'bp.js',
-    path: path.resolve(__dirname, 'distWebPack'),
+    path: path.resolve(__dirname, 'test'),
     libraryTarget: 'var',
     library: 'BestPractices'
   }, 

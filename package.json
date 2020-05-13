@@ -24,7 +24,7 @@
     "test-bp14": "mocha test/best-practices/QW-BP14.spec.js",
     "test-bp15": "mocha test/best-practices/QW-BP15.spec.js",
     "clean": "node clean.js",
-    "build": "npm run clean && tsc --build",
+    "build": "npm run clean && tsc --build && webpack --mode development",
     "pub": "npm run build && npm publish --access=public"
   },
   "repository": {
