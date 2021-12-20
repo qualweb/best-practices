@@ -16,8 +16,8 @@ class Test implements BestPracticeResult {
   }
 
   public addElement(element: typeof window.qwElement, withText = true, fullElement = false): void {
-    const htmlCode = element.getElementHtmlCode(withText, fullElement);
-    const pointer = element.getElementSelector();
+    const htmlCode = element.toString(withText, fullElement);
+    const pointer = element.getSelector();
     this.elements.push({ htmlCode, pointer });
   }
 }

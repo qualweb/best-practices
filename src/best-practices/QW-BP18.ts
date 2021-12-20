@@ -41,8 +41,8 @@ class QW_BP18 extends BestPracticeObject {
 
   @ElementExists
   execute(element: typeof window.qwElement): void {
-    if (element.getElementTagName() === 'style') {
-      const sheet = <any>element.getElementProperty('sheet');
+    if (element.getTagName() === 'style') {
+      const sheet = <any>element.getProperty('sheet');
 
       for (const rule of sheet.cssRules || []) {
         if (rule?.style?.cssText?.includes('width:') && this.checkIfCssSelectorIsApplicable(rule)) {
@@ -53,7 +53,7 @@ class QW_BP18 extends BestPracticeObject {
         }
       }
     } else {
-      const style = <string>element.getElementAttribute('style');
+      const style = <string>element.getAttribute('style');
       this.checkCssProperty(style, element);
     }
   }
@@ -71,9 +71,9 @@ class QW_BP18 extends BestPracticeObject {
     for (const selector of selectors || []) {
       if (selector.startsWith('.') || selector.startsWith('#')) {
         console.log(selector);
-        const elements = window.qwPage.getElements(selector);
+        const elements = window.qwPage.findAll(selector);
         for (const element of elements || []) {
-          if (this.containers.includes(element.getElementTagName())) {
+          if (this.containers.includes(element.getTagName())) {
             affectsContainers = true;
             break;
           }

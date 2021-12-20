@@ -18,9 +18,9 @@ class QW_BP11 extends BestPracticeObject {
     let result = 0;
     let hasBr = false;
 
-    for (const child of element.getElementChildren() || []) {
-      const type = child.getElementType();
-      if (child && child.getElementTagName() === 'br') {
+    for (const child of element.getChildren() || []) {
+      const type = child.getType();
+      if (child && child.getTagName() === 'br') {
         result++;
         hasBr = true;
       } else if (type !== 'text') {

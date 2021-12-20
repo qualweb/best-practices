@@ -17,7 +17,7 @@ class QW_BP10 extends BestPracticeObject {
       test.verdict = 'passed';
       test.resultCode = 'P1';
     } else {
-      const name = element.getElementTagName();
+      const name = element.getTagName();
       test.verdict = 'failed';
       test.description = super.getTranslation('F1', { name });
       test.resultCode = 'F1';

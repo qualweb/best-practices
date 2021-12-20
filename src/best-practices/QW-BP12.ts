@@ -13,20 +13,17 @@ class QW_BP12 extends BestPracticeObject {
   @ElementExists
   @ElementHasChild('tr')
   execute(element: typeof window.qwElement): void {
-    const rows = element.getElements('tr');
+    const rows = element.findAll('tr');
     let firstRowChildren = new Array<typeof window.qwElement>();
     if (rows.length > 0) {
-      firstRowChildren = rows[0].getElementChildren();
+      firstRowChildren = rows[0].getChildren();
 
       let i, scope;
       let scopeCole = true;
 
       for (i = 1; i < firstRowChildren.length; i++) {
-        if (
-          firstRowChildren[i].getElementTagName() === 'td' ||
-          (firstRowChildren[i].getElementTagName() === 'th' && scopeCole)
-        ) {
-          scope = firstRowChildren[i].getElementAttribute('scope');
+        if (firstRowChildren[i].getTagName() === 'td' || (firstRowChildren[i].getTagName() === 'th' && scopeCole)) {
+          scope = firstRowChildren[i].getAttribute('scope');
           scopeCole = scope === 'col';
         }
       }
@@ -36,9 +33,9 @@ class QW_BP12 extends BestPracticeObject {
       for (i = 1; i < rows.length; i++) {
         if (scopeRow) {
           row = rows[i];
-          const cells = row.getElements('td');
+          const cells = row.findAll('td');
           if (cells.length > 0) {
-            scope = cells[0].getElementAttribute('scope');
+            scope = cells[0].getAttribute('scope');
             scopeRow = scope === 'row';
           }
         }

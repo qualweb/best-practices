@@ -17,7 +17,7 @@ class QW_BP4 extends BestPracticeObject {
     if (aCount >= 10) {
       const test = new Test('failed', undefined, 'F1');
 
-      if (element.getElementParent()) {
+      if (element.getParent()) {
         test.addElement(element);
       }
 

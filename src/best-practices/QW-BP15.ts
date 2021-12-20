@@ -17,7 +17,7 @@ class QW_BP15 extends BestPracticeObject {
   execute(element: typeof window.qwElement): void {
     const test = new Test();
 
-    const width = <string>element.getElementAttribute('width');
+    const width = <string>element.getAttribute('width');
     const unit = width.trim().substring(width.length - 2, width.length);
 
     if (!this.absoluteLengths.includes(unit) && parseFloat(width).toString().length !== width.length) {

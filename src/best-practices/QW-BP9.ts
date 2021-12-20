@@ -13,10 +13,10 @@ class QW_BP9 extends BestPracticeObject {
   @ElementExists
   @ElementDoesNotHaveChild('th')
   async execute(element: typeof window.qwElement): Promise<void> {
-    const headers = element.getElements('th');
+    const headers = element.findAll('th');
 
     if (headers.length === 0) {
-      const caption = element.getElements('caption');
+      const caption = element.findAll('caption');
 
       const test = new Test();
 

@@ -74,7 +74,7 @@ function ElementExists(_target: any, _propertyKey: string, descriptor: PropertyD
 function ElementIsVisible(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
   const method = descriptor.value;
   descriptor.value = function () {
-    const isVisible = window.DomUtils.isElementVisible(<typeof window.qwElement>arguments[0]);
+    const isVisible = (<typeof window.qwElement>arguments[0]).isVisible();
     if (isVisible) {
       return method.apply(this, arguments);
     }
@@ -85,7 +85,7 @@ function ElementHasAttribute(attribute: string) {
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     descriptor.value = async function () {
-      const attr = (<typeof window.qwElement>arguments[0]).elementHasAttribute(attribute);
+      const attr = (<typeof window.qwElement>arguments[0]).hasAttribute(attribute);
       if (attr) {
         return method.apply(this, arguments);
       }
@@ -97,7 +97,7 @@ function ElementHasNonEmptyAttribute(attribute: string) {
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     descriptor.value = async function () {
-      const attr = (<typeof window.qwElement>arguments[0]).getElementAttribute(attribute);
+      const attr = (<typeof window.qwElement>arguments[0]).getAttribute(attribute);
       if (attr && attr.trim()) {
         return method.apply(this, arguments);
       }
@@ -109,7 +109,7 @@ function ElementHasChild(child: string) {
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     descriptor.value = async function () {
-      const children = (<typeof window.qwElement>arguments[0]).getElements(child);
+      const children = (<typeof window.qwElement>arguments[0]).findAll(child);
       if (children.length !== 0) {
         return method.apply(this, arguments);
       }
@@ -121,7 +121,7 @@ function ElementDoesNotHaveChild(child: string) {
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     descriptor.value = async function () {
-      const children = (<typeof window.qwElement>arguments[0]).getElements(child);
+      const children = (<typeof window.qwElement>arguments[0]).findAll(child);
       if (children.length === 0) {
         return method.apply(this, arguments);
       }
@@ -133,7 +133,7 @@ function ElementHasParent(parent: string) {
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     descriptor.value = async function () {
-      const element = (<typeof window.qwElement>arguments[0]).elementHasParent(parent);
+      const element = (<typeof window.qwElement>arguments[0]).hasParent(parent);
       if (element) {
         return method.apply(this, arguments);
       }
@@ -145,7 +145,7 @@ function ElementIsNotChildOf(parent: string) {
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     descriptor.value = async function () {
-      const hasParent = (<typeof window.qwElement>arguments[0]).elementHasParent(parent);
+      const hasParent = (<typeof window.qwElement>arguments[0]).hasParent(parent);
       if (!hasParent) {
         return method.apply(this, arguments);
       }

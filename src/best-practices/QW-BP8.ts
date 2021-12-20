@@ -15,21 +15,21 @@ class QW_BP8 extends BestPracticeObject {
   execute(element: typeof window.qwElement): void {
     const test = new Test();
 
-    const images = element.getElements('img');
-    const svgs = element.getElements('svg');
+    const images = element.findAll('img');
+    const svgs = element.findAll('svg');
 
     if (images.length + svgs.length !== 0) {
       const svgANames = new Array<string>();
 
       for (const svg of svgs || []) {
-        const aName = window.AccessibilityUtils.getAccessibleNameSVG(svg);
+        const aName = svg.getAccessibleNameSVG();
 
         if (aName && aName.trim() !== '') {
           svgANames.push(aName);
         }
       }
 
-      const aName = window.AccessibilityUtils.getAccessibleName(element);
+      const aName = element.getAccessibleName();
 
       if ((aName && aName.trim() !== '') || svgANames.length > 0) {
         test.verdict = 'passed';

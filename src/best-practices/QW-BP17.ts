@@ -18,7 +18,7 @@ class QW_BP17 extends BestPracticeObject {
       test.resultCode = 'F1';
       super.addTestResult(test);
     } else {
-      const refElement = window.DomUtils.getElementReferencedByHREF(element);
+      const refElement = element.getElementReferencedByHREF();
 
       if (refElement) {
         test.verdict = 'warning';

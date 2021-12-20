@@ -14,19 +14,21 @@ class QW_BP7 extends BestPracticeObject {
   execute(element: typeof window.qwElement): void {
     const test = new Test();
 
-    const titleText = element.getElementText().replace(/\s/g, '');
+    const titleText = element.getText()?.replace(/\s/g, '');
 
-    const regExp = new RegExp('@([[:punct:]]{4,})@iU');
-    if (!regExp.test(titleText)) {
-      test.verdict = 'passed';
-      test.resultCode = `P1`;
-    } else {
-      test.verdict = 'failed';
-      test.resultCode = `F1`;
+    if (titleText) {
+      const regExp = new RegExp('@([[:punct:]]{4,})@iU');
+      if (!regExp.test(titleText)) {
+        test.verdict = 'passed';
+        test.resultCode = `P1`;
+      } else {
+        test.verdict = 'failed';
+        test.resultCode = `F1`;
+      }
+
+      test.addElement(element);
+      super.addTestResult(test);
     }
-
-    test.addElement(element);
-    super.addTestResult(test);
   }
 }
 

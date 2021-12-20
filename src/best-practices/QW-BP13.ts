@@ -12,7 +12,7 @@ class QW_BP13 extends BestPracticeObject {
 
   @ElementExists
   execute(element: typeof window.qwElement): void {
-    const aWithImg = element.getElementParent();
+    const aWithImg = element.getParent();
 
     if (!aWithImg) {
       return;
@@ -20,13 +20,13 @@ class QW_BP13 extends BestPracticeObject {
 
     const test = new Test();
 
-    const href = aWithImg.getElementAttribute('href');
-    const aWithImgNext = aWithImg.getElementNextSibling();
-    const aWithImgPrev = aWithImg.getElementPreviousSibling();
+    const href = aWithImg.getAttribute('href');
+    const aWithImgNext = aWithImg.nextElementSibling();
+    const aWithImgPrev = aWithImg.previousElementSibling();
 
     if (
-      (aWithImgNext && aWithImgNext.getElementAttribute('href') === href) ||
-      (aWithImgPrev && aWithImgPrev.getElementAttribute('href') === href)
+      (aWithImgNext && aWithImgNext.getAttribute('href') === href) ||
+      (aWithImgPrev && aWithImgPrev.getAttribute('href') === href)
     ) {
       test.verdict = 'failed';
       test.resultCode = 'F1';
@@ -35,7 +35,7 @@ class QW_BP13 extends BestPracticeObject {
       test.resultCode = 'P1';
     }
 
-    if (aWithImg.getElementParent()) {
+    if (aWithImg.getParent()) {
       test.addElement(element);
     }
     super.addTestResult(test);

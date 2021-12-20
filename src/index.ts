@@ -47,12 +47,8 @@ class BestPractices {
     }
   }
 
-  private executeBP(
-    bestPractice: string,
-    selector: string,
-    report: BestPracticesReport
-  ): void {
-    const elements = window.qwPage.getElements(selector);
+  private executeBP(bestPractice: string, selector: string, report: BestPracticesReport): void {
+    const elements = window.qwPage.findAll(selector);
     if (elements.length > 0) {
       for (const elem of elements ?? []) {
         this.bestPractices[bestPractice].execute(elem);
@@ -76,7 +72,7 @@ class BestPractices {
       },
       assertions: {}
     };
-    
+
     for (const selector of Object.keys(mapping) ?? []) {
       const _mapping = <BPMapping>mapping;
       for (const bestPractice of _mapping[selector] ?? []) {
@@ -85,7 +81,7 @@ class BestPractices {
         }
       }
     }
-    
+
     return report;
   }
 }

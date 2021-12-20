@@ -21,7 +21,7 @@ class QW_BP2 extends BestPracticeObject {
   async execute(element: typeof window.qwElement): Promise<void> {
     const test = new Test();
 
-    const altValue = <string>element.getElementAttribute('alt');
+    const altValue = <string>element.getAttribute('alt');
 
     if (altValue.trim().length <= 100) {
       test.verdict = 'passed';

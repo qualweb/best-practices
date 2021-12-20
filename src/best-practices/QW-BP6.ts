@@ -14,18 +14,20 @@ class QW_BP6 extends BestPracticeObject {
   execute(element: typeof window.qwElement): void {
     const test = new Test();
 
-    const titleText = element.getElementText();
+    const titleText = element.getText();
 
-    if (titleText.length < 100) {
-      test.verdict = 'passed';
-      test.resultCode = 'P1';
-    } else {
-      test.verdict = 'failed';
-      test.resultCode = 'F1';
+    if (titleText) {
+      if (titleText.length < 100) {
+        test.verdict = 'passed';
+        test.resultCode = 'P1';
+      } else {
+        test.verdict = 'failed';
+        test.resultCode = 'F1';
+      }
+
+      test.addElement(element);
+      super.addTestResult(test);
     }
-
-    test.addElement(element);
-    super.addTestResult(test);
   }
 }
 
