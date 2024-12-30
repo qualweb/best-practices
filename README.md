@@ -1,3 +1,5 @@
+This repository has been archived. QualWeb is now being maintained in a monorepo at https://github.com/qualweb/qualweb
+
 # QualWeb best practices
 
 Implementation of accessibility best practices for web pages.
